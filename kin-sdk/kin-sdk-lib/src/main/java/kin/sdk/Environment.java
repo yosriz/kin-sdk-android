@@ -21,7 +21,7 @@ public class Environment {
     private final Network network;
 
     /**
-     * Build an Environment object.
+     * Build an Environment object. ami
      * @param networkUrl the URL of the blockchain node.
      * @param networkPassphrase the network id to be used.
      */
