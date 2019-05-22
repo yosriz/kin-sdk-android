@@ -16,6 +16,7 @@ constructor() {
     @Throws(Exception::class)
     fun createAccount(destinationAccount: String) {
         val client = OkHttpClient()
+        Log.d("test - createAccount", "destinationAccount = $destinationAccount")
         val request = Request.Builder()
                 .url(String.format(URL_CREATE_ACCOUNT, destinationAccount)).build()
         client.newCall(request).execute()?.let {
@@ -27,6 +28,7 @@ constructor() {
 
     fun fundWithKin(destinationAccount: String, amount: String) {
         val client = OkHttpClient()
+        Log.d("test - fundWithKin", "destinationAccount = $destinationAccount")
         val request = Request.Builder()
                 .url(String.format(URL_FUND + amount, destinationAccount))
                 .get()
