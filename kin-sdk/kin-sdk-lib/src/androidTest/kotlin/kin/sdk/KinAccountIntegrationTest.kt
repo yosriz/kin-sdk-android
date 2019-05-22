@@ -2,6 +2,7 @@ package kin.sdk
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.filters.LargeTest
+import android.util.Log
 import kin.base.Memo
 import kin.base.MemoText
 import kin.base.Server
@@ -30,8 +31,8 @@ class KinAccountIntegrationTest {
     private val fee: Int = 100
     private val feeInKin: BigDecimal = BigDecimal.valueOf(0.001)
     private val appIdVersionPrefix = "1"
-    private val timeoutDurationSeconds: Long = 25
-    private val timeoutDurationSecondsLong: Long = 35
+    private val timeoutDurationSeconds: Long = 15
+    private val timeoutDurationSecondsLong: Long = 20
 
     private lateinit var kinClient: KinClient
 
@@ -84,6 +85,7 @@ class KinAccountIntegrationTest {
 
         var listenerRegistration : ListenerRegistration? = null
         listenerRegistration = kinAccount.addAccountCreationListener {
+            Log.d("AMITAI", "remove account registration")
             listenerRegistration?.remove()
             latch.countDown()
         }
@@ -92,7 +94,9 @@ class KinAccountIntegrationTest {
         assertTrue(latch.await(timeoutDurationSeconds, TimeUnit.SECONDS))
 
         assertThat(kinAccount.balanceSync.value(), equalTo(BigDecimal("0.00000")))
+        Log.d("AMITAI", "start fund")
         fakeKinOnBoard.fundWithKin(kinAccount.publicAddress.orEmpty(), "3.14159")
+        Log.d("AMITAI", "end fund")
         assertThat(kinAccount.balanceSync.value(), equalTo(BigDecimal("3.14159")))
 
     }

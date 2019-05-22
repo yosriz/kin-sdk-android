@@ -1,6 +1,7 @@
 package kin.base.requests;
 
 
+import android.util.Log;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import com.here.oksse.OkSse;
@@ -35,10 +36,12 @@ public class StreamHandler<T> {
     return okSse.newServerSentEvent(request, new ServerSentEvent.Listener() {
       @Override
       public void onOpen(ServerSentEvent sse, okhttp3.Response response) {
+        Log.d("AMITAI", "onOpen:");
       }
 
       @Override
       public void onMessage(ServerSentEvent sse, String id, String event, String data) {
+        Log.d("AMITAI", "onMessage: data = " + data);
         if (OPEN_MESSAGE_DATA.equals(data)) {
           return;
         }
@@ -54,24 +57,31 @@ public class StreamHandler<T> {
 
       @Override
       public void onComment(ServerSentEvent sse, String comment) {
+        Log.d("AMITAI", "onComment - comment = " + comment);
       }
 
       @Override
       public boolean onRetryTime(ServerSentEvent sse, long milliseconds) {
+        Log.d("AMITAI", "onRetryTime");
         return true;
       }
 
       @Override
       public boolean onRetryError(ServerSentEvent sse, Throwable throwable, okhttp3.Response response) {
+        Log.d("AMITAI", "onRetryError - error = " + throwable);
+        Log.d("AMITAI", "onRetryError - response = " + response);
         return true;
       }
 
       @Override
       public void onClosed(ServerSentEvent sse) {
+        Log.d("AMITAI", "onClosed");
       }
 
       @Override
       public Request onPreRetry(ServerSentEvent sse, Request originalRequest) {
+        Log.d("AMITAI", "onPreRetry - " + originalRequest);
+        Log.d("AMITAI", "onPreRetry - " + originalRequest.headers());
         return originalRequest;
       }
     });
